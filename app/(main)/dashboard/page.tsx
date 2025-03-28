@@ -9,19 +9,22 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export default function DashboardPage() {
-  const [username] = useState("Radhika")
+  const [username] = useState("Angel")
   const { theme } = useTheme()
 
   // Data for favorite day graph
   const favoriteDayData = [
-    { day: "Mon", hours: 4, color: "#1DB954" },
-    { day: "Tue", hours: 6, color: "#1DB954" },
-    { day: "Wed", hours: 5, color: "#1DB954" },
-    { day: "Thu", hours: 8, color: "#1DB954" },
-    { day: "Fri", hours: 3, color: "#1DB954" },
-    { day: "Sat", hours: 4.5, color: "#1DB954" },
-    { day: "Sun", hours: 5.5, color: "#1DB954" },
+    { day: "Mon", fullDay: "Monday", hours: 4, color: "#22c55e" },
+    { day: "Tue", fullDay: "Tuesday", hours: 6, color: "#22c55e" },
+    { day: "Wed", fullDay: "Wednesday", hours: 5, color: "#22c55e" },
+    { day: "Thu", fullDay: "Thursday", hours: 8, color: "#22c55e" },
+    { day: "Fri", fullDay: "Friday", hours: 3, color: "#22c55e" },
+    { day: "Sat", fullDay: "Saturday", hours: 4.5, color: "#22c55e" },
+    { day: "Sun", fullDay: "Sunday", hours: 5.5, color: "#22c55e" },
   ]
+  const barWidth = 60
+  const gap = 40
+  const totalWidth = favoriteDayData.length * (barWidth + gap) - gap + 100
 
   return (
     <div className={`p-4 md:p-6 space-y-6 ${theme === "light" ? "bg-zinc-50" : "bg-black"}`}>
@@ -367,110 +370,60 @@ export default function DashboardPage() {
       </div>
 
       <Card className={theme === "light" ? "bg-white border-zinc-200 shadow-sm" : "bg-zinc-900 border-zinc-800"}>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Favourite Day to Listen</CardTitle>
-          <BarChart3 className={`h-4 w-4 ${theme === "light" ? "text-zinc-500" : "text-zinc-400"}`} />
-        </CardHeader>
-        <CardContent>
-          <div className="h-[250px] relative">
-            {/* Y-axis labels */}
-            <div
-              className={`absolute left-0 top-0 h-full flex flex-col justify-between text-xs ${theme === "light" ? "text-zinc-500" : "text-zinc-400"} pr-2`}
-            >
-              <span>10h</span>
-              <span>7.5h</span>
-              <span>5h</span>
-              <span>2.5h</span>
-              <span>0h</span>
-            </div>
+  <CardHeader className="flex flex-row items-center justify-between pb-2">
+    <CardTitle className="text-sm font-medium">Favourite Day to Listen</CardTitle>
+    <BarChart3 className={`h-4 w-4 ${theme === "light" ? "text-zinc-500" : "text-zinc-400"}`} />
+  </CardHeader>
+  <CardContent>
+    <div className="relative w-full h-[280px]"> {/* Single container for both Y-axis and graph */}
+      
+      {/* SVG Graph */}
+      <svg className="absolute top-0 left-0 h-[240px] w-full" viewBox={`0 0 ${totalWidth} 240`} preserveAspectRatio="none">
+        {/* Horizontal grid lines */}
+        {[0, 50, 100, 150, 200].map((y) => (
+          <line key={y} x1="0" y1={y} x2={totalWidth} y2={y} stroke={theme === "light" ? "#e4e4e7" : "#27272a"} strokeWidth="1" />
+        ))}
 
-            {/* Graph area */}
-            <div className="ml-8 h-full">
-              <svg className="h-[200px] w-full" viewBox="0 0 700 200" preserveAspectRatio="none">
-                {/* Horizontal grid lines */}
-                <line
-                  x1="0"
-                  y1="0"
-                  x2="700"
-                  y2="0"
-                  stroke={theme === "light" ? "#e4e4e7" : "#27272a"}
-                  strokeWidth="1"
-                />
-                <line
-                  x1="0"
-                  y1="50"
-                  x2="700"
-                  y2="50"
-                  stroke={theme === "light" ? "#e4e4e7" : "#27272a"}
-                  strokeWidth="1"
-                />
-                <line
-                  x1="0"
-                  y1="100"
-                  x2="700"
-                  y2="100"
-                  stroke={theme === "light" ? "#e4e4e7" : "#27272a"}
-                  strokeWidth="1"
-                />
-                <line
-                  x1="0"
-                  y1="150"
-                  x2="700"
-                  y2="150"
-                  stroke={theme === "light" ? "#e4e4e7" : "#27272a"}
-                  strokeWidth="1"
-                />
-                <line
-                  x1="0"
-                  y1="200"
-                  x2="700"
-                  y2="200"
-                  stroke={theme === "light" ? "#e4e4e7" : "#27272a"}
-                  strokeWidth="1"
-                />
+        {/* X-axis line */}
+        <line x1="0" y1="200" x2={totalWidth} y2="200" stroke={theme === "light" ? "#71717a" : "#52525b"} strokeWidth="2" />
 
-                {/* Bars for each day */}
-                {favoriteDayData.map((item, index) => {
-                  const barWidth = 60
-                  const gap = 40
-                  const x = index * (barWidth + gap) + 50
-                  const barHeight = (item.hours / 10) * 200
+        {/* Bars */}
+        {favoriteDayData.map((item, index) => {
+          const x = index * (barWidth + gap) + 50;
+          const maxBarHeight = 200;
+          const barHeight = (item.hours / 10) * maxBarHeight;
+          const yPosition = 200 - barHeight;
 
-                  return (
-                    <g key={item.day}>
-                      {/* Bar */}
-                      <rect x={x} y={200 - barHeight} width={barWidth} height={barHeight} fill={item.color} rx="4" />
+          return (
+            <g key={item.day}>
+              {/* Bar */}
+              <rect x={x} y={yPosition} width={barWidth} height={barHeight} fill={item.color} rx="4" />
 
-                      {/* Day label */}
-                      <text
-                        x={x + barWidth / 2}
-                        y="220"
-                        textAnchor="middle"
-                        fontSize="12"
-                        fill={theme === "light" ? "#71717a" : "#a1a1aa"}
-                      >
-                        {item.day}
-                      </text>
+              {/* Hours label */}
+              <text x={x + barWidth / 2} y={yPosition - 5} textAnchor="middle" fontSize="12" fill="#22c55e" fontWeight="bold">
+                {item.hours}h
+              </text>
 
-                      {/* Hours label */}
-                      <text
-                        x={x + barWidth / 2}
-                        y={200 - barHeight - 10}
-                        textAnchor="middle"
-                        fontSize="12"
-                        fill="#22c55e"
-                        fontWeight="bold"
-                      >
-                        {item.hours}h
-                      </text>
-                    </g>
-                  )
-                })}
-              </svg>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+              {/* Day label */}
+              <text x={x + barWidth / 2} y={225} textAnchor="middle" fontSize="14" fontWeight="medium" fill={theme === "light" ? "#3f3f46" : "#d4d4d8"}>
+                {item.fullDay}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* Y-axis Labels (Placed in the same div, positioned absolutely) */}
+      <div className={`absolute left-0 top-0 h-[200px] flex flex-col justify-between text-xs ${theme === "light" ? "text-zinc-500" : "text-zinc-400"} pr-2`}>
+        <span>10h</span>
+        <span>7.5h</span>
+        <span>5h</span>
+        <span>2.5h</span>
+        <span>0h</span>
+      </div>
+    </div>
+  </CardContent>
+</Card>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Card className={theme === "light" ? "bg-white border-zinc-200 shadow-sm" : "bg-zinc-900 border-zinc-800"}>
