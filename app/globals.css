@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142.1 76.2% 36.3%;
+    --radius: 0.5rem;
+
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 240 10% 3.9%;
+    --sidebar-border: 240 5.9% 90%;
+    --sidebar-ring: 142.1 76.2% 36.3%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 142.1 70.6% 45.3%;
+    --primary-foreground: 144.9 80.4% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 142.4 71.8% 29.2%;
+
+    --sidebar: 240 5.9% 10%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 142.1 76.2% 36.3%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 0 0% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom responsive utilities */
+@layer utilities {
+  .xs\:block {
+    @media (min-width: 480px) {
+      display: block;
+    }
+  }
+
+  .xs\:hidden {
+    @media (min-width: 480px) {
+      display: none;
+    }
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.7);
+}
+
+/* Transition classes */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Light mode enhancements */
+.light .card,
+.light .dropdown-menu {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.light .button-primary {
+  background-color: hsl(142.1, 76.2%, 36.3%);
+  color: white;
+}
+
+.light .button-primary:hover {
+  background-color: hsl(142.1, 76.2%, 32%);
+}
+
+.light .input-field {
+  border-color: hsl(240, 5.9%, 90%);
+  background-color: white;
+}
+
+.light .input-field:focus {
+  border-color: hsl(142.1, 76.2%, 36.3%);
+  box-shadow: 0 0 0 2px hsla(142.1, 76.2%, 36.3%, 0.2);
+}
+
+/* Enhanced light mode for specific sections */
+.light .settings-card {
+  background-color: white;
+  border-color: hsl(240, 5.9%, 90%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.light .settings-section {
+  border-color: hsl(240, 5.9%, 90%);
+}
+
+.light .chatbot-message-user {
+  background-color: hsl(142.1, 76.2%, 36.3%);
+  color: white;
+}
+
+.light .chatbot-message-ai {
+  background-color: hsl(240, 4.8%, 95.9%);
+  color: hsl(240, 10%, 3.9%);
+  border: 1px solid hsl(240, 5.9%, 90%);
+}
+
+.light .newsletter-card {
+  background-color: white;
+  border-color: hsl(240, 5.9%, 90%);
+}
+
+.light .newsletter-highlight {
+  background-color: hsl(210, 100%, 97%);
+  border-color: hsl(210, 100%, 90%);
+}
+
+.light .faq-item {
+  background-color: white;
+  border-color: hsl(240, 5.9%, 90%);
+}
+
+.light .faq-content {
+  border-color: hsl(240, 5.9%, 90%);
+  color: hsl(240, 3.8%, 46.1%);
+}
+
